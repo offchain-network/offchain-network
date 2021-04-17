@@ -1,3 +1,7 @@
+.navbar-container {
+	padding: 20px 50px;
+}
+
 nav {
 	font-size: 20px;
 	display: flex;
@@ -36,4 +40,10 @@ nav a {
 
 .nav-center span:nth-child(2) {
 	font-weight: 900;
+}
+
+.nav-links {
+	width: 20rem;
+	display: flex;
+	justify-content: space-between;
 }
