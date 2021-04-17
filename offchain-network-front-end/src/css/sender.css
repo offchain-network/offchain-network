@@ -1,0 +1,53 @@
+.sender-container {
+	background-color: #000;
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.sender-container > span {
+	font-weight: bolder;
+	font-size: 16px;
+}
+
+.send-info input {
+	border: none;
+	background-color: black;
+}
+
+.send-info button {
+	background-color: #1958ed;
+	border-radius: 20px;
+	color: #fff;
+	border: none;
+	font-weight: bolder;
+	font-size: 22px;
+	padding: 15px 35px;
+	width: 100%;
+}
+.form-border {
+	display: flex;
+	justify-content: space-between;
+	border: 1px solid white;
+	border-radius: 20px;
+	padding: 10px;
+	margin: 10px 0;
+}
+
+.form-part {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-part input,
+.form-part select {
+	font-size: 22px;
+	margin-top: 10px;
+}
+
+.form-part select {
+	width: 75px;
+	color: #fff;
+	border: none;
+	background-color: #000;
+	align-self: flex-end;
+}
