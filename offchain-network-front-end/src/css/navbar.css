@@ -1,0 +1,13 @@
+.nav-logo {
+	display: flex;
+	align-items: center;
+}
+
+.nav-logo img {
+	height: 30px;
+	width: 30px;
+}
+
+.nav-logo span {
+	font-weight: 900;
+}
