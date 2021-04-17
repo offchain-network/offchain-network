@@ -1,0 +1,47 @@
+service: offchain-network
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, "dev"}
+  region: eu-central-1
+  profile: offchain-network
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+        - dynamodb:CreateTable
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+        - sns:publish
+        - ecs:StopTask
+      Resource: "*"
+
+functions:
+  app:
+    handler: build/serverless.handler
+    timeout: 10
+    events:
+      - http:
+          path: /
+          method: any
+          cors: true
+      - http:
+          path: "{proxy+}"
+          method: any
+          cors: true
+
+# resources:
+#   - ${file(resources/dynamodb-tables.yml)}
