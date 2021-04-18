@@ -48,6 +48,11 @@
 	width: 50%;
 }
 
+.form-part:nth-child(1) > span,
+.form-part:nth-child(2) > span {
+	font-size: 14px;
+}
+
 .form-part input,
 .form-part select {
 	font-size: 22px;
