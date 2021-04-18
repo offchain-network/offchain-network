@@ -1,42 +1,131 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.0;
+pragma experimental ABIEncoderV2;
 
-contract UnidirectionPaymentChannelHub {
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+
+contract UnidirectionalPaymentChannelHub {
     
     struct PaymentChannel {
         address payable sender;
         address payable recipient;
+        address tokenAddress;
         uint256 expiration;
         uint256 amount;
         bool open;
     }
     
-    PaymentChannel[] channels;
+    // SENDER => RECEIVER => TOKEN_ADDRESS => CHANNEL
+    mapping (address => mapping (address => mapping (address => PaymentChannel))) channels;
+
+    constructor() {}
+
     
-    function open(address payable recipient, uint256 duration) payable external returns(uint256 id){
-        require(msg.value > 0);
+    function getPaymentChannel(address sender, address recipient, address tokenAddress) external view returns(PaymentChannel memory) {
+        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel memory channel = channels[sender][recipient][tokenAddress];
+
+        return channel;
+    }
+    
+
+    function _channelExists(address sender, address recipient, address tokenAddress) internal view returns(bool exists) {
+        // If there is no struct, all values will be 0 including sender
+        return channels[sender][recipient][tokenAddress].sender != address(0);
+    }
+    
+    
+    
+    
+    function open(
+        address payable recipient, 
+        uint256 duration, 
+        address tokenAddress, 
+        uint256 tokenAmount
+    ) 
+        payable 
+        public 
+    {
         require(msg.sender != recipient);
-        PaymentChannel memory newChannel = PaymentChannel(payable(msg.sender), recipient, block.timestamp+duration, msg.value, true);
-        channels.push(newChannel);
-        return channels.length-1;
+
+        // If channel already exists, it has to be closed for you to create a new one
+        // TODO Make it possible to open multiple channels???
+        if (_channelExists(msg.sender, recipient, tokenAddress)) {
+            require (
+                channels[msg.sender][recipient][tokenAddress].open == false, 
+                "Contract between these addresses using this token is already open"
+            );
+        }
+
+        uint256 amount;
+
+        // If ERC20 is being sent
+        if (tokenAddress != address(0)) {
+            require(msg.value == 0, "Ether and ERC20 tokens cannot be used together");
+            amount = tokenAmount;
+            ERC20 erc20 = ERC20(tokenAddress);
+            require(
+                erc20.transferFrom(msg.sender, address(this), tokenAmount),
+                "Tokens could not be transferred"
+            );
+        } 
+        // If ether is being sent
+        else {
+            require(msg.value > 0, "Ether must be supplied");
+            require (tokenAmount == 0, "Ether and ERC20 tokens cannot be used together");
+            amount = msg.value;
+        }
+
+
+
+        
+
+        PaymentChannel memory newChannel = PaymentChannel(
+            payable(msg.sender), 
+            recipient,
+            tokenAddress,
+            block.timestamp+duration, 
+            amount, 
+            true
+        );
+
+        channels[msg.sender][recipient][tokenAddress] = newChannel;
     }
 
     /// the recipient can close the channel at any time by presenting a
     /// signed amount from the sender. the recipient will be sent that amount,
     /// and the remainder will go back to the sender
-    function close(uint256 channelIndex, uint256 amount, bytes memory signature) public {
-        PaymentChannel storage channel = channels[channelIndex];
+    function close(address sender, address recipient, address tokenAddress, uint256 amount, bytes memory signature) public {
+        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+
         require(channel.open = true);
         require(msg.sender == channel.recipient);
-        require(isValidSignature(channelIndex, amount, signature));
+        require(isValidSignature(sender, recipient, tokenAddress, amount, signature));
         
         channel.open = false;
-        channel.recipient.transfer(amount);
+
+
+        // ERC20 Token
+        if (tokenAddress != address(0)) {
+            ERC20 erc20 = ERC20(tokenAddress);
+            require(
+                erc20.transfer(channel.recipient, amount),
+                "Tokens could not be transferred"
+            );
+        } 
+        // Ether
+        else {
+            channel.recipient.transfer(amount);
+        }
     }
 
     /// the sender can extend the expiration at any time
-    function extend(uint256 channelIndex, uint256 newExpiration) public {
-        PaymentChannel storage channel = channels[channelIndex];
+    function extend(address sender, address recipient, address tokenAddress, uint256 newExpiration) public {
+        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+
         require(msg.sender == channel.sender);
         require(newExpiration > channel.expiration);
 
@@ -45,21 +134,38 @@ contract UnidirectionPaymentChannelHub {
 
     /// if the timeout is reached without the recipient closing the channel,
     /// then the Ether is released back to the sender.
-    function claimTimeout(uint256 channelIndex) public {
-        PaymentChannel storage channel = channels[channelIndex];
+    function claimTimeout(address sender, address recipient, address tokenAddress) public {
+        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+
         require(block.timestamp >= channel.expiration);
+        require (msg.sender == channel.sender);
         require(channel.open == true);
-        uint256 amount = channel.amount;
+
         channel.open = false;
-        channel.sender.transfer(amount);
+
+        // ERC20 Token
+        if (tokenAddress != address(0)) {
+            ERC20 erc20 = ERC20(tokenAddress);
+            require(
+                erc20.transfer(channel.sender, channel.amount),
+                "Tokens could not be transferred"
+            );
+        } 
+        // Ether
+        else {
+            channel.sender.transfer(channel.amount);
+        }
     }
 
-    function isValidSignature(uint256 channelIndex, uint256 amount, bytes memory signature)
+    function isValidSignature(address sender, address recipient, address tokenAddress, uint256 amount, bytes memory signature)
         public
         view
         returns (bool)
     {
-        PaymentChannel memory channel = channels[channelIndex];
+        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel memory channel = channels[sender][recipient][tokenAddress];
+
         bytes32 message = prefixed(keccak256(abi.encodePacked(this, amount)));
 
         // check that the signature is from the payment sender
