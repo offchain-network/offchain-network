@@ -2,6 +2,7 @@
 	background-color: #000;
 	border-radius: 20px;
 	padding: 20px;
+	width: 30%;
 }
 
 .sender-container > span {
@@ -34,9 +35,17 @@
 	margin: 10px 0;
 }
 
-.form-part {
+.form-part:nth-child(1) {
 	display: flex;
 	flex-direction: column;
+	width: 40%;
+}
+
+.form-part:nth-child(2) {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	width: 50%;
 }
 
 .form-part input,
