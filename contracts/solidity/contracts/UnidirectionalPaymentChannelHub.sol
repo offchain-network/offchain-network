@@ -47,7 +47,8 @@ contract UnidirectionalPaymentChannelHub {
         payable 
         public 
     {
-        require(msg.sender != recipient);
+        require(msg.sender != recipient, "Sender and recipient cannot be the same address");
+        require(recipient != address(0), "Recipient can't be zero");
 
         // If channel already exists, it has to be closed for you to create a new one
         // TODO Make it possible to open multiple channels???
@@ -122,9 +123,9 @@ contract UnidirectionalPaymentChannelHub {
     }
 
     /// the sender can extend the expiration at any time
-    function extend(address sender, address recipient, address tokenAddress, uint256 newExpiration) public {
-        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+    function extend(address recipient, address tokenAddress, uint256 newExpiration) public {
+        require (_channelExists(msg.sender, recipient, tokenAddress), "Channel does not exist");
+        PaymentChannel storage channel = channels[msg.sender][recipient][tokenAddress];
 
         require(msg.sender == channel.sender);
         require(newExpiration > channel.expiration);
