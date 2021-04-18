@@ -12,6 +12,7 @@
 .send-info input {
 	border: none;
 	background-color: black;
+	color: white;
 }
 
 .send-info button {
