@@ -126,12 +126,17 @@ contract UnidirectionalPaymentChannelHub {
             ERC20 erc20 = ERC20(tokenAddress);
             require(
                 erc20.transfer(channel.recipient, amount),
-                "Tokens could not be transferred"
+                "Tokens could not be transferred to recipient"
+            );
+            require(
+                erc20.transfer(channel.sender, channel.amount - amount),
+                "Tokens could not be transferred to recipient"
             );
         } 
         // Ether
         else {
             channel.recipient.transfer(amount);
+            channel.sender.transfer(channel.amount - amount);
         }
     }
 
