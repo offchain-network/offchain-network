@@ -17,14 +17,24 @@ contract UnidirectionalPaymentChannelHub {
     }
     
     // SENDER => RECEIVER => TOKEN_ADDRESS => CHANNEL
-    mapping (address => mapping (address => mapping (address => PaymentChannel))) channels;
+    mapping (address => mapping (address => mapping (address => bytes32))) public usersToId;
+    mapping (bytes32 => PaymentChannel) public idToChannel;
 
     constructor() {}
 
-    
+
+    function getUsersToId(address sender, address recipient, address tokenAddress) external view returns(bytes32) {
+        return usersToId[sender][recipient][tokenAddress];
+    }
+
+    function getIdToChannel(bytes32 id) external view returns(PaymentChannel memory) {
+        return idToChannel[id];
+    }
+
     function getPaymentChannel(address sender, address recipient, address tokenAddress) external view returns(PaymentChannel memory) {
-        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel memory channel = channels[sender][recipient][tokenAddress];
+        require(_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[sender][recipient][tokenAddress];
+        PaymentChannel memory channel = idToChannel[id];
 
         return channel;
     }
@@ -32,7 +42,7 @@ contract UnidirectionalPaymentChannelHub {
 
     function _channelExists(address sender, address recipient, address tokenAddress) internal view returns(bool exists) {
         // If there is no struct, all values will be 0 including sender
-        return channels[sender][recipient][tokenAddress].sender != address(0);
+        return usersToId[sender][recipient][tokenAddress] != bytes32(0);
     }
     
     
@@ -53,8 +63,9 @@ contract UnidirectionalPaymentChannelHub {
         // If channel already exists, it has to be closed for you to create a new one
         // TODO Make it possible to open multiple channels???
         if (_channelExists(msg.sender, recipient, tokenAddress)) {
+            bytes32 id = usersToId[msg.sender][recipient][tokenAddress];
             require (
-                channels[msg.sender][recipient][tokenAddress].open == false, 
+                idToChannel[id].open == false, 
                 "Contract between these addresses using this token is already open"
             );
         }
@@ -79,7 +90,7 @@ contract UnidirectionalPaymentChannelHub {
         }
 
 
-
+        bytes32 id = keccak256(abi.encodePacked(msg.sender, recipient, block.timestamp));
         
 
         PaymentChannel memory newChannel = PaymentChannel(
@@ -91,22 +102,24 @@ contract UnidirectionalPaymentChannelHub {
             true
         );
 
-        channels[msg.sender][recipient][tokenAddress] = newChannel;
+        usersToId[msg.sender][recipient][tokenAddress] = id;
+        idToChannel[id] = newChannel;
     }
 
     /// the recipient can close the channel at any time by presenting a
     /// signed amount from the sender. the recipient will be sent that amount,
     /// and the remainder will go back to the sender
     function close(address sender, address recipient, address tokenAddress, uint256 amount, bytes memory signature) public {
-        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+        require(_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[sender][recipient][tokenAddress];
+        PaymentChannel storage channel = idToChannel[id];
 
-        require(channel.open = true);
-        require(msg.sender == channel.recipient);
-        require(isValidSignature(sender, recipient, tokenAddress, amount, signature));
+        require(channel.open = true, "Channel not open");
+        require(msg.sender == channel.recipient, "Only recipient can close the channel");
+        require(amount <= channel.amount, "Signed amount is higher than payment channel balance");
+        require(isValidSignature(sender, recipient, tokenAddress, amount, signature), "Not a valid signature");
         
         channel.open = false;
-
 
         // ERC20 Token
         if (tokenAddress != address(0)) {
@@ -124,8 +137,9 @@ contract UnidirectionalPaymentChannelHub {
 
     /// the sender can extend the expiration at any time
     function extend(address recipient, address tokenAddress, uint256 newExpiration) public {
-        require (_channelExists(msg.sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel storage channel = channels[msg.sender][recipient][tokenAddress];
+        require(_channelExists(msg.sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[msg.sender][recipient][tokenAddress];
+        PaymentChannel storage channel = idToChannel[id];
 
         require(msg.sender == channel.sender);
         require(newExpiration > channel.expiration);
@@ -135,9 +149,10 @@ contract UnidirectionalPaymentChannelHub {
 
     /// if the timeout is reached without the recipient closing the channel,
     /// then the Ether is released back to the sender.
-    function claimTimeout(address sender, address recipient, address tokenAddress) public {
-        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel storage channel = channels[sender][recipient][tokenAddress];
+    function claimTimeout(address recipient, address tokenAddress) public {
+        require(_channelExists(msg.sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[msg.sender][recipient][tokenAddress];
+        PaymentChannel storage channel = idToChannel[id];
 
         require(block.timestamp >= channel.expiration);
         require (msg.sender == channel.sender);
@@ -164,10 +179,11 @@ contract UnidirectionalPaymentChannelHub {
         view
         returns (bool)
     {
-        require (_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        PaymentChannel memory channel = channels[sender][recipient][tokenAddress];
+        require(_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[sender][recipient][tokenAddress];
+        PaymentChannel memory channel = idToChannel[id];
 
-        bytes32 message = prefixed(keccak256(abi.encodePacked(this, amount)));
+        bytes32 message = prefixed(keccak256(abi.encodePacked(this, id, amount)));
 
         // check that the signature is from the payment sender
         return recoverSigner(message, signature) == channel.sender;
