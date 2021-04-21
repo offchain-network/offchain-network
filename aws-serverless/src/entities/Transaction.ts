@@ -48,4 +48,8 @@ export default class Transaction extends Entity<ITransactionData> {
   get Signature(): any {
     return this.Signature;
   }
+
+  get ChannelId(): string {
+    return this.ChannelId;
+  }
 }

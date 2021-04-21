@@ -1,8 +1,9 @@
 import express from "express";
 import transactionController from "../../../controllers/transactionController";
+import { IDependencies } from "../../../types/types";
 import authMiddlewares from "../middlewares/authMiddlewares";
 
-const transactionRoutes = (dependencies: any) => {
+const transactionRoutes = (dependencies: IDependencies) => {
   const router = express.Router();
 
   const { isAuthorized } = authMiddlewares(dependencies);
