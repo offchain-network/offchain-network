@@ -7,7 +7,8 @@
     "test": "jest --watch-all",
     "start:dev": "nodemon",
     "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/index.js"
+    "start": "npm run build && node build/index.js",
+    "deploy:aws": "npm run build && sls deploy"
   },
   "keywords": [],
   "author": "",

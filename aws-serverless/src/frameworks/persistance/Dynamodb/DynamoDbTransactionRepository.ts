@@ -28,6 +28,15 @@ export default class DynamoDbTransactionRepository
     this.channelGSI = CHANNEL_GSI;
   }
 
+  async get(transactionId: string) {
+    const { Item }: any = await this.docClient
+      .get({ Key: { id: transactionId }, TableName: this.tableName })
+      .promise();
+    if (!Item) throw new Error("No Item found");
+    const tx = new Transaction(Item, Item.id);
+    return tx;
+  }
+
   async create(transaction: ITransactionData) {
     await this.docClient
       .put({ Item: transaction, TableName: this.tableName })

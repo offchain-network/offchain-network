@@ -16,6 +16,13 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
     },
   ];
 
+  async get(transactionId: string) {
+    const foundTx = this.transactions.find((tx) => tx.id === transactionId);
+    if (!foundTx) throw new Error("No Transaction found");
+    const tx = new Transaction(foundTx, foundTx.id);
+    return tx;
+  }
+
   async create(transaction: ITransactionData) {
     this.transactions.push(transaction);
   }
