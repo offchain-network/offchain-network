@@ -7,20 +7,32 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
-        - AttributeName: type
+        - AttributeName: SenderAddress
           AttributeType: S
-        - AttributeName: data
+        - AttributeName: ReceiverAddress
+          AttributeType: S
+        - AttributeName: ChannelId
           AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
       BillingMode: "PAY_PER_REQUEST"
       GlobalSecondaryIndexes:
-        - IndexName: ${self:custom.typeDataGSI}
+        - IndexName: ${self:custom.senderGSI}
           KeySchema:
-            - AttributeName: type
+            - AttributeName: SenderAddress
               KeyType: HASH
-            - AttributeName: data
-              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ${self:custom.receiverGSI}
+          KeySchema:
+            - AttributeName: ReceiverAddress
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ${self:custom.channelGSI}
+          KeySchema:
+            - AttributeName: ChannelId
+              KeyType: HASH
           Projection:
             ProjectionType: ALL

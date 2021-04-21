@@ -2,7 +2,9 @@ service: offchain-network
 
 custom:
   mainTableName: main-${self:provider.stage}
-  typeDataGSI: type-data-GSI
+  senderGSI: sender-GSI
+  receiverGSI: receiver-GSI
+  channelGSI: channel-GSI
 
 provider:
   name: aws
@@ -31,10 +33,15 @@ provider:
         - dynamodb:ListStreams
       Resource: "*"
 
+  environment:
+    MAIN_TABLE_NAME: ${self:custom.mainTableName}
+    SENDER_GSI: ${self:senderGSI}
+    RECEIVER_GSI: ${self:receiverGSI}
+    CHANNEL_GSI: ${self:channelGSI}
+
 functions:
   app:
     handler: build/serverless.handler
-    timeout: 10
     events:
       - http:
           path: /

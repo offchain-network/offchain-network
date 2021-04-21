@@ -9,10 +9,11 @@ export type ITransactionData = {
   AmountOfTokensWithReceiver: string;
   TransactionNonce: number;
   Signature: any;
+  ChannelId: string;
 };
 
 export default class Transaction extends Entity<ITransactionData> {
-  private constructor(props: ITransactionData, id?: string) {
+  constructor(props: ITransactionData, id?: string) {
     super(props, id);
   }
 
