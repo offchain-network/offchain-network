@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
 const authMiddlewares = (dependencies: any) => {
-  const { organizationRepository } = dependencies.DatabaseService;
   const isAuthorized = async (
     req: Request,
     res: Response,

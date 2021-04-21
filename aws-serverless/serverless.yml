@@ -1,6 +1,16 @@
 service: offchain-network
 
+plugins:
+  - serverless-dotenv-plugin
+
 custom:
+  dotenv:
+    exclude:
+      - MAIN_TABLE_NAME
+      - SENDER_GSI
+      - RECEIVER_GSI
+      - CHANNEL_GSI
+
   mainTableName: main-${self:provider.stage}
   senderGSI: sender-GSI
   receiverGSI: receiver-GSI
