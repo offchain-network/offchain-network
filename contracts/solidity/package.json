@@ -26,6 +26,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@eth-optimism/hardhat-ovm": "^0.0.2",
     "@openzeppelin/contracts": "^3.4.1-solc-0.7-2"
   }
 }

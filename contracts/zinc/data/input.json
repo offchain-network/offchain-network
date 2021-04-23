@@ -1,0 +1,120 @@
+{
+  "type": "contract",
+  "storages": {
+    "0x0000000000000000000000000000000000000000": [
+      "0x0",
+      [],
+      {
+        "r": {
+          "x": "0x0",
+          "y": "0x0"
+        },
+        "s": "0x0",
+        "pk": {
+          "x": "0x0",
+          "y": "0x0"
+        }
+      }
+    ]
+  },
+  "msg": {
+    "sender": "0x0000000000000000000000000000000000000000",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "token_address": "0x0000000000000000000000000000000000000000",
+    "amount": "0"
+  },
+  "arguments": {
+    "new": {
+      "signature": {
+        "r": {
+          "x": "0x0",
+          "y": "0x0"
+        },
+        "s": "0x0",
+        "pk": {
+          "x": "0x0",
+          "y": "0x0"
+        }
+      }
+    },
+    "verify": {
+      "signature": {
+        "r": {
+          "x": "0x0",
+          "y": "0x0"
+        },
+        "s": "0x0",
+        "pk": {
+          "x": "0x0",
+          "y": "0x0"
+        }
+      },
+      "message": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+}
