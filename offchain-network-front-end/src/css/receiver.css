@@ -41,3 +41,9 @@
 	justify-content: space-between;
 	font-size: 10px;
 }
+
+@media screen and (max-width: 768px) {
+	.receiver-container {
+		width: 45%;
+	}
+}

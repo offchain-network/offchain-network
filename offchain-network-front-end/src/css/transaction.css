@@ -64,3 +64,30 @@
 .transaction-bottom-left img {
 	margin-left: 4px;
 }
+
+@media screen and (max-width: 768px) {
+	.transaction-title {
+		font-size: 14px;
+	}
+
+	.transaction-history > span {
+		font-size: 12px;
+	}
+
+	.transaction-top > span {
+		font-size: 12px;
+	}
+
+	.transaction-bottom {
+		font-size: 6px;
+	}
+
+	.transaction-bottom-left img {
+		margin-right: 2px;
+		width: 5%;
+	}
+
+	.transaction-time {
+		font-size: 6px;
+	}
+}

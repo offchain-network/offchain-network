@@ -86,4 +86,9 @@
 	.form-part select {
 		font-size: 14px;
 	}
+
+	.send-info button {
+		font-size: 14px;
+		padding: 12px 35px;
+	}
 }

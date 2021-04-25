@@ -23,7 +23,7 @@ const Transaction = () => {
             <span>Signature: 0x8a3cd88e97634c89b3a5d8408dcb73013e7357ae92f5d6</span>
             <img src={Copy} alt="copy"/>
           </div>
-          <span>2021.04.14 13:53 UTC</span>
+          <span className="transaction-time">2021.04.14 13:53 UTC</span>
         </div>
       </div>
       <div className="transaction-history">
