@@ -8,7 +8,7 @@ const Transaction = () => {
     <div className="transaction-container">
       <div className="transaction-title">
         <span>Transaction History</span>
-        <span><i class="fa fa-refresh"></i></span>
+        <span><i className="fa fa-refresh"></i></span>
       </div>
     <div className="transaction-history-container">
       <div className="transaction-history">

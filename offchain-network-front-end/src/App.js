@@ -11,7 +11,7 @@ function App() {
       <Navbar/>
       <div className="transfer-info">
         <Sender/>
-        <img src={arrow} alt="arrow"/>
+        <img src={arrow} alt="arrow" className="arrow-png"/>
         <Receiver/>
       </div>
       <Transaction/>

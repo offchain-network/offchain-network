@@ -5,3 +5,9 @@
 	width: 86%;
 	margin: 50px auto 0;
 }
+
+@media screen and (max-width: 768px) {
+	.arrow-png {
+		transform: rotate(90deg);
+	}
+}
