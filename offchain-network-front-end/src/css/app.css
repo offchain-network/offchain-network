@@ -10,4 +10,8 @@
 	.arrow-png {
 		transform: rotate(90deg);
 	}
+
+	.transfer-info {
+		flex-direction: column;
+	}
 }

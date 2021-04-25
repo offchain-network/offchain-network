@@ -9,7 +9,7 @@ const Sender = () => {
         <form className="send-info">
           <div className="form-border">
             <div className="form-part">
-              <label>Amount</label>
+              <span>Amount</span>
               <input placeholder="0.00"/>
             </div>
             <div className="form-part">

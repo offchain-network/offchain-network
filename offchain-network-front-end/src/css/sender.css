@@ -66,3 +66,24 @@
 	background-color: #000;
 	align-self: flex-end;
 }
+
+@media screen and (max-width: 768px) {
+	.sender-container {
+		width: 40%;
+	}
+
+	.sender-container > span {
+		font-weight: bolder;
+		font-size: 12px;
+	}
+
+	.form-part:nth-child(1) > span,
+	.form-part:nth-child(2) > span {
+		font-size: 10px;
+	}
+
+	.form-part input,
+	.form-part select {
+		font-size: 14px;
+	}
+}
