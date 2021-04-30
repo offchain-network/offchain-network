@@ -16,37 +16,47 @@ contract UnidirectionalPaymentChannelHub {
         bool open;
     }
     
-    // SENDER => RECEIVER => TOKEN_ADDRESS => CHANNEL
+    // SENDER => RECEIVER => TOKEN_ADDRESS => CHANNELID
     mapping (address => mapping (address => mapping (address => bytes32))) public usersToId;
     mapping (bytes32 => PaymentChannel) public idToChannel;
 
+
+    event ChannelOpened(
+        address sender,
+        address recipient, 
+        uint256 expiration, 
+        address tokenAddress, 
+        uint256 tokenAmount,
+        bytes32 channelId
+    );
+
+    event ChannelClosed(
+        address sender,
+        address recipient, 
+        address tokenAddress, 
+        uint256 amountToSender,
+        uint256 amountToRecipient,
+        bytes32 channelId
+    );
+
+    event ChannelExtended(
+        address sender,
+        address recipient, 
+        address tokenAddress, 
+        uint256 newExpiration,
+        bytes32 channelId
+    );
+    
+    event TimeoutClaimed(
+        address sender,
+        address recipient, 
+        address tokenAddress, 
+        uint256 tokenAmount,
+        bytes32 channelId
+    );
+
+    // proxy, add ownership?
     constructor() {}
-
-
-    function getUsersToId(address sender, address recipient, address tokenAddress) external view returns(bytes32) {
-        return usersToId[sender][recipient][tokenAddress];
-    }
-
-    function getIdToChannel(bytes32 id) external view returns(PaymentChannel memory) {
-        return idToChannel[id];
-    }
-
-    function getPaymentChannel(address sender, address recipient, address tokenAddress) external view returns(PaymentChannel memory) {
-        require(_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
-        bytes32 id = usersToId[sender][recipient][tokenAddress];
-        PaymentChannel memory channel = idToChannel[id];
-
-        return channel;
-    }
-    
-
-    function _channelExists(address sender, address recipient, address tokenAddress) internal view returns(bool exists) {
-        // If there is no struct, all values will be 0 including sender
-        return usersToId[sender][recipient][tokenAddress] != bytes32(0);
-    }
-    
-    
-    
     
     function open(
         address payable recipient, 
@@ -97,13 +107,21 @@ contract UnidirectionalPaymentChannelHub {
             payable(msg.sender), 
             recipient,
             tokenAddress,
-            block.timestamp+duration, 
+            block.timestamp + duration, 
             amount, 
             true
         );
 
         usersToId[msg.sender][recipient][tokenAddress] = id;
         idToChannel[id] = newChannel;
+        emit ChannelOpened(
+            msg.sender,
+            recipient, 
+            block.timestamp + duration, 
+            tokenAddress, 
+            amount,
+            id
+        );
     }
 
     /// the recipient can close the channel at any time by presenting a
@@ -138,6 +156,15 @@ contract UnidirectionalPaymentChannelHub {
             channel.recipient.transfer(amount);
             channel.sender.transfer(channel.amount - amount);
         }
+
+        emit ChannelClosed(
+            channel.sender,
+            channel.recipient, 
+            channel.tokenAddress, 
+            channel.amount - amount,
+            amount,
+            id
+        );
     }
 
     /// the sender can extend the expiration at any time
@@ -150,6 +177,14 @@ contract UnidirectionalPaymentChannelHub {
         require(newExpiration > channel.expiration);
 
         channel.expiration = newExpiration;
+
+        emit ChannelExtended(
+            channel.sender,
+            channel.recipient, 
+            channel.tokenAddress, 
+            newExpiration,
+            id
+        );
     }
 
     /// if the timeout is reached without the recipient closing the channel,
@@ -177,6 +212,14 @@ contract UnidirectionalPaymentChannelHub {
         else {
             channel.sender.transfer(channel.amount);
         }
+
+        emit TimeoutClaimed(
+            channel.sender,
+            channel.recipient, 
+            channel.tokenAddress, 
+            channel.amount,
+            id
+        );
     }
 
     function isValidSignature(address sender, address recipient, address tokenAddress, uint256 amount, bytes memory signature)
@@ -194,8 +237,26 @@ contract UnidirectionalPaymentChannelHub {
         return recoverSigner(message, signature) == channel.sender;
     }
 
-    /// All functions below this are just taken from the chapter
-    /// 'creating and verifying signatures' chapter.
+    function getUsersToId(address sender, address recipient, address tokenAddress) external view returns(bytes32) {
+        return usersToId[sender][recipient][tokenAddress];
+    }
+
+    function getIdToChannel(bytes32 id) external view returns(PaymentChannel memory) {
+        return idToChannel[id];
+    }
+
+    function getPaymentChannel(address sender, address recipient, address tokenAddress) external view returns(PaymentChannel memory) {
+        require(_channelExists(sender, recipient, tokenAddress), "Channel does not exist");
+        bytes32 id = usersToId[sender][recipient][tokenAddress];
+        PaymentChannel memory channel = idToChannel[id];
+
+        return channel;
+    }
+
+    function _channelExists(address sender, address recipient, address tokenAddress) internal view returns(bool exists) {
+        // If there is no struct, all values will be 0 including sender
+        return usersToId[sender][recipient][tokenAddress] != bytes32(0);
+    }
 
     function splitSignature(bytes memory sig)
         internal
