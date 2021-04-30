@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
+import {postEndpoint} from "../api/utils";
 import "../css/sender.css";
 
 const Sender = ({signer}) => {
 
-  const [amount, setAmount] = useState(0.0);
+  const [amount, setAmount] = useState("0.0");
+  const [transaction, setTransaction] = useState(0);
 
   const constructPaymentMessage = async (contractAddress, channelId, amount) => {
     return ethers.utils.solidityKeccak256(
@@ -37,7 +39,7 @@ const handleChange = (e) => {
           <div className="form-border">
             <div className="form-part">
               <span>Amount</span>
-              <input value={amount} onChange={handleChange} name="amount"/>
+              <input value={amount} onChange={handleChange} name="amount"placeholder="0.0"/>
             </div>
             <div className="form-part">
               <span>Balance: 1.1183</span>
