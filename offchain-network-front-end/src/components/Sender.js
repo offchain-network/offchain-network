@@ -2,11 +2,24 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import {postEndpoint} from "../api/utils";
 import "../css/sender.css";
+import axios from 'axios';
 
 const Sender = ({signer}) => {
 
+  const transactionObject = {
+           id: "id",               
+           SenderAddress: signer,
+           ReceiverAddress: "receiver",
+           AddressOfTokenUsed: "token",
+           AmountOfTokensWithSender: "senderToken",
+           AmountOfTokensWithReceiver: "receivertoken", 
+           TransactionNonce: "0",
+           Signature: "sig",
+           ChannelId: "chanelId"
+     }
+
   const [amount, setAmount] = useState("0.0");
-  const [transaction, setTransaction] = useState(0);
+  const [transaction, setTransaction] = useState(transactionObject);
 
   const constructPaymentMessage = async (contractAddress, channelId, amount) => {
     return ethers.utils.solidityKeccak256(
@@ -21,9 +34,10 @@ const signPayment = async (signer, contractAddress, channelId, amount) => {
     return signedMessage;
 }
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
   signPayment(signer, "0x0000000000000", "channelId", amount);
+  await axios.post(`${postEndpoint}/${transaction}`);
 }
 
 const handleChange = (e) => {
