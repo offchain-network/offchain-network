@@ -6,6 +6,7 @@ import Transaction from "./components/Transaction";
 import arrow from "./images/Forward Arrow.png";
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
+import ChannelId from "./components/ChannelId";
 
 function App() {
 
@@ -24,13 +25,14 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      <Navbar/>
+      <ChannelId/>
+      {/* <Navbar/>
       <div className="transfer-info">
         <Sender signer={signer}/>
         <img src={arrow} alt="arrow" className="arrow-png"/>
         <Receiver/>
       </div>
-      <Transaction/>
+      <Transaction/> */}
     </div>
   );
 }
