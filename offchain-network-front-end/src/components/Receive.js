@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/receive.css';
 
 const Receive = () => {
 
+  const [display, setDisplay] = useState(false);
+
   const handleChange = () => {
-    // console.log("changed")
+    setDisplay(!display);
   }
 
   return ( 
@@ -20,11 +22,11 @@ const Receive = () => {
         </div>
       </div>
       <form>
-        <div className="receive-form-off">
+        <div className={`receive-form-off ${display ? "display" : ""}`}>
           <label>Balance</label>
           <input placeholder="1.1103 ETH"/>
         </div>
-        <div className="receive-form-on">
+        <div className={`receive-form-on ${display ? "" : "display"}`}>
           <div className="amount-to-withdraw">
             <span>Amount to withdraw</span>
             <input placeholder="31.862332423846223847 ETH"/>
