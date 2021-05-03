@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from "../images/Logo.png";
 import '../css/navbar.css';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return ( 
@@ -13,8 +14,8 @@ const Navbar = () => {
           </div>
           <div className="nav-center">
             <span><a href="#">Create Channel</a></span>
-            <span><a href="#">Send</a></span>
-            <span><a href="#">Receive</a></span>
+            <span><Link to="/send">Send</Link></span>
+            <span><Link to="/receive">Receive</Link></span>
           </div>
         </div>
         <div className="nav-links">

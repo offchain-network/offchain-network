@@ -1,13 +1,11 @@
-import "./css/app.css";
 import Navbar from "./components/Navbar";
-import Receiver from "./components/Receiver";
-import Sender from "./components/Sender";
 import Transaction from "./components/Transaction";
-import arrow from "./images/Forward Arrow.png";
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import ChannelId from "./components/ChannelId";
 import Receive from "./components/Receive";
+import Send from "./components/Send";
+import { Route, Switch } from "react-router";
 
 function App() {
 
@@ -26,15 +24,13 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      {/* <Navbar/>
+      <Navbar/>
       <ChannelId/>
-      <div className="transfer-info">
-        <Sender signer={signer}/>
-        <img src={arrow} alt="arrow" className="arrow-png"/>
-        <Receiver/>
-      </div>
-      <Transaction/> */}
-      <Receive/>
+      <Switch>
+        <Route path="/send" render = {() => <Send signer={signer}/>}/>
+        <Route path="/receive" component = {Receive}/>
+      </Switch>
+      <Transaction/>
     </div>
   );
 }
