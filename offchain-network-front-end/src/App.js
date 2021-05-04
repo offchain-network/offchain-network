@@ -1,11 +1,11 @@
 import Navbar from "./components/Navbar";
-import Transaction from "./components/Transaction";
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import ChannelId from "./components/ChannelId";
 import Receive from "./components/Receive";
 import Send from "./components/Send";
 import { Route, Switch } from "react-router";
+import Channel from "./components/Channel";
 
 function App() {
 
@@ -29,8 +29,8 @@ useEffect(()=>{
       <Switch>
         <Route path="/send" render = {() => <Send signer={signer}/>}/>
         <Route path="/receive" component = {Receive}/>
+        <Route path="/" component = {Channel}/>
       </Switch>
-      <Transaction/>
     </div>
   );
 }

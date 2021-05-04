@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../css/receive.css';
+import Transaction from './Transaction';
 
 const Receive = () => {
 
@@ -10,6 +11,7 @@ const Receive = () => {
   }
 
   return ( 
+    <>
     <div className="receive-container">
       <div className="receive-header">
         <span>You</span>
@@ -39,6 +41,8 @@ const Receive = () => {
         <button>Redeem</button>
       </form>
     </div>
+    <Transaction/>
+    </>
    );
 }
  

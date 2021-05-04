@@ -64,6 +64,7 @@ button {
 .amount-to-withdraw > input {
 	background: none;
 	border: none;
+	color: #fff;
 }
 
 .input::placeholder {

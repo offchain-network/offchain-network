@@ -13,7 +13,7 @@ const Navbar = () => {
             <span>offchain.network</span>
           </div>
           <div className="nav-center">
-            <span><a href="#">Create Channel</a></span>
+            <span><Link to="/">Create Channel</Link></span>
             <span><Link to="/send">Send</Link></span>
             <span><Link to="/receive">Receive</Link></span>
           </div>
