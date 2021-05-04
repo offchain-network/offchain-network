@@ -25,7 +25,6 @@ useEffect(()=>{
   return (
     <div className="App">
       <Navbar/>
-      <ChannelId/>
       <Switch>
         <Route path="/send" render = {() => <Send signer={signer}/>}/>
         <Route path="/receive" component = {Receive}/>

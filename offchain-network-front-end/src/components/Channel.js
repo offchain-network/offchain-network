@@ -1,8 +1,11 @@
 import React from 'react';
 import '../css/channel.css';
+import RecipientId from './RecipientId';
 
 const Channel = () => {
   return ( 
+    <>
+    <RecipientId/>
     <div className="channel-container">
       <div className="channel-title">Which type of payment channel would you like to create?</div>
       <div className="payment-type">
@@ -19,6 +22,7 @@ const Channel = () => {
       </div>
       <div className="channel-title">What currency would you like to use?</div>
     </div>
+    </>
    );
 }
  

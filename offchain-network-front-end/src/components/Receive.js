@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../css/receive.css';
+import ChannelId from './ChannelId';
 import Transaction from './Transaction';
 
 const Receive = () => {
@@ -12,6 +13,7 @@ const Receive = () => {
 
   return ( 
     <>
+    <ChannelId/>
     <div className="receive-container">
       <div className="receive-header">
         <span>You</span>
