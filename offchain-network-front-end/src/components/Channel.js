@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/channel.css';
+import Ether from './Ether';
 import RecipientId from './RecipientId';
 
 const Channel = () => {
@@ -21,6 +22,9 @@ const Channel = () => {
         </div>
       </div>
       <div className="channel-title">What currency would you like to use?</div>
+      <div className="form-div">
+        <Ether/>
+      </div>
     </div>
     </>
    );

@@ -48,3 +48,8 @@
 .two-way > button {
 	background-color: #bcbcbc;
 }
+
+.form-div {
+	display: flex;
+	justify-content: space-evenly;
+}
