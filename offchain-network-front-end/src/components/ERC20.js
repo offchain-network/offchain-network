@@ -3,7 +3,7 @@ import '../css/erc20.css';
 
 const ERC20 = () => {
   return ( 
-    <div className="ether-container">
+    <div className="erc20-container">
       <h3>ERC20 token</h3>
       <p>ERC20 tokens are fungible (currency-like) tokens on Ethereum, such as Tether, Dai, Chainlink, Wrapped Bitcoin.</p>
       <form>
