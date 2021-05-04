@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/channel.css';
+import ERC20 from './ERC20';
 import Ether from './Ether';
 import RecipientId from './RecipientId';
 
@@ -24,6 +25,7 @@ const Channel = () => {
       <div className="channel-title">What currency would you like to use?</div>
       <div className="form-div">
         <Ether/>
+        <ERC20/>
       </div>
     </div>
     </>
