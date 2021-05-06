@@ -15,6 +15,7 @@ custom:
   senderGSI: sender-GSI
   receiverGSI: receiver-GSI
   channelGSI: channel-GSI
+  channelTableName: channels-${self:provider.stage}
 
 provider:
   name: aws
@@ -48,6 +49,7 @@ provider:
     SENDER_GSI: ${self:senderGSI}
     RECEIVER_GSI: ${self:receiverGSI}
     CHANNEL_GSI: ${self:channelGSI}
+    CHANNEL_TABLE_NAME: ${self:custom.channelTableName}
 
 functions:
   app:
