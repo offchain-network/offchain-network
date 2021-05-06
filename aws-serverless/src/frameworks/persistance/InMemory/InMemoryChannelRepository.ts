@@ -1,6 +1,6 @@
 import IChannelRepository from "../../../application/contracts/IChannelRepository";
 
-export default class DynamoDbChannelRepository implements IChannelRepository {
+export default class InMemoryDbChannelRepository implements IChannelRepository {
   channels: any = [
     { id: "123", recipient: "0x0", amount: "100" },
     { id: "456", recipient: "0x1", amount: "200" },

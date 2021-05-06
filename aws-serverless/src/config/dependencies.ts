@@ -1,6 +1,7 @@
 import DynamoDbChannelRepository from "../frameworks/persistance/Dynamodb/DynamoDbChannelRepository";
 import DynamoDbTransactionRepository from "../frameworks/persistance/Dynamodb/DynamoDbTransactionRepository";
 import { InMemoryTransactionRepository } from "../frameworks/persistance/InMemory/InMemoryTransactionRepository";
+import InMemoryChannelRepository from "../frameworks/persistance/InMemory/InMemoryChannelRepository";
 
 const dependencies = () => {
   let projectDependencies = {
@@ -8,7 +9,10 @@ const dependencies = () => {
       process.env.NODE_ENV === "test"
         ? new InMemoryTransactionRepository()
         : new DynamoDbTransactionRepository(),
-    ChannelRepository: new DynamoDbChannelRepository(),
+    ChannelRepository:
+      process.env.NODE_ENV === "test"
+        ? new InMemoryChannelRepository()
+        : new DynamoDbChannelRepository(),
   };
 
   return projectDependencies;

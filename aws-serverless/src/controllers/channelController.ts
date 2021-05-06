@@ -16,7 +16,7 @@ const channelController = (dependencies: IDependencies) => {
   };
 
   const deleteChannel: RequestHandler = async (req, res, next) => {
-    const { channelId } = req.body;
+    const { channelId } = req.params;
 
     if (!channelId) {
       return res.status(400).json({ message: "ChannelId required" });
