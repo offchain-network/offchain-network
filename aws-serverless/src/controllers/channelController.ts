@@ -31,10 +31,21 @@ const channelController = (dependencies: IDependencies) => {
     res.status(200).json({ channels });
   };
 
+  const getChannel: RequestHandler = async (req, res, next) => {
+    const { channelId } = req.params;
+    if (!channelId) {
+      return res.status(400).json({ message: "ChannelId required" });
+    }
+    const channel = await ChannelRepository.get(channelId);
+
+    res.status(200).json({ channel });
+  };
+
   return {
     createChannel,
     deleteChannel,
     listChannels,
+    getChannel,
   };
 };
 

@@ -32,4 +32,11 @@ export default class DynamoDbChannelRepository implements IChannelRepository {
       .promise();
     return Items;
   }
+
+  async get(channelId: string) {
+    const { Item } = await this.docClient
+      .get({ TableName: this.tableName, Key: { id: channelId } })
+      .promise();
+    return Item;
+  }
 }

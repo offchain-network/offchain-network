@@ -16,6 +16,16 @@ describe("channel routes", () => {
     expect(response.body.channels).toHaveLength(2);
   });
 
+  it("Can get", async () => {
+    let response = await request(app)
+      .get("/api/channels/123")
+      .set("Authorization", authHeader);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("channel");
+    expect(response.body.channel).toHaveProperty("id", "123");
+  });
+
   it("Can post", async () => {
     let response = await request(app)
       .post("/api/channels")

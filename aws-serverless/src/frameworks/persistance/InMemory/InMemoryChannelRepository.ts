@@ -17,4 +17,8 @@ export default class InMemoryDbChannelRepository implements IChannelRepository {
   async list() {
     return this.channels;
   }
+
+  async get(channelId: string) {
+    return this.channels.find((c: any) => c.id === channelId);
+  }
 }

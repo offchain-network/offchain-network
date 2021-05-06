@@ -20,6 +20,7 @@ const channelRoutes = (dependencies: IDependencies) => {
   router
     .route("/:channelId")
     .all(isAuthorized)
+    .get(controller.getChannel)
     .delete(controller.deleteChannel);
 
   return router;
