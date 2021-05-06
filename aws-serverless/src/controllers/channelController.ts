@@ -6,9 +6,16 @@ const channelController = (dependencies: IDependencies) => {
 
   const createChannel: RequestHandler = async (req, res, next) => {
     const { channel } = req.body;
+    const { id, recipient, amount } = channel;
 
     if (!channel) {
       return res.status(400).json({ message: "Channel required" });
+    }
+
+    if (!id || !recipient || !amount) {
+      return res
+        .status(400)
+        .json({ message: "Id, Recipient and amount needed on channel" });
     }
 
     await ChannelRepository.create(channel);

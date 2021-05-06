@@ -30,7 +30,7 @@ describe("channel routes", () => {
     let response = await request(app)
       .post("/api/channels")
       .set("Authorization", authHeader)
-      .send({ channel: { id: "789", receiver: "0x2", amount: "20" } });
+      .send({ channel: { id: "789", recipient: "0x2", amount: "20" } });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("message");
