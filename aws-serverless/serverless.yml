@@ -10,6 +10,7 @@ custom:
       - SENDER_GSI
       - RECEIVER_GSI
       - CHANNEL_GSI
+      - CHANNEL_TABLE_NAME
 
   mainTableName: main-${self:provider.stage}
   senderGSI: sender-GSI
