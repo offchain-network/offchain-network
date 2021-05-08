@@ -3,20 +3,15 @@ import Logo from "../images/Logo.png";
 import '../css/navbar.css';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({signer, init}) => {
+const Navbar = ({init}) => {
   const [content, setContent] = useState("")
 
-  const navInit = async () => {
-    const mycontent = await signer.getAddress()
-    setContent(mycontent)
-  }
-
   useEffect(() => {
-    console.log("In navbar ", signer)
-    if(signer === undefined) {
+    const address = JSON.parse(localStorage.getItem("signer"))
+    if(!address) {
       setContent("Connect to Wallet")
     } else {
-      navInit()
+      setContent(address)
     }
   }, [])
 
@@ -41,7 +36,7 @@ const Navbar = ({signer, init}) => {
         <div className="nav-links">
           <span><a href="#">About</a></span>
           <span><a href="#">Whitepaper</a></span>
-          {content == "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleInit}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
+          {content === "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleInit}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
         </div>
       </nav> 
     </div>

@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/channel.css';
 import ERC20 from './ERC20';
 import Ether from './Ether';
 import RecipientId from './RecipientId';
+import abi from '../contracts/UnidirectionalPaymentChannelHub.json';
+import { ethers } from 'ethers';
 
 const Channel = () => {
+  const [recipient, setRecipient] = useState("")
+  const [etherChannel, setEtherChannel] = useState(undefined)
+  const getRecipientId = (state) => {
+    setRecipient(state)
+  }
+
+  const etherContent = async (content) => {
+    let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
+    let contract = new ethers.Contract(contractAddress, abi, "signer");
+    let recipientAddress = recipient;
+    let duration = content.duration;
+    let tokenAddress = ethers.constants.AddressZero
+    let tokenAmount = 0;
+    let overrides = { value: content.amount };
+    let tx = await contract.open(recipientAddress, duration, tokenAddress, tokenAmount, overrides);
+    console.log(tx.hash);
+    await tx.wait();
+    alert("success!");
+  }
+
   return ( 
     <>
-    <RecipientId/>
+    <RecipientId getRecipientId = {getRecipientId}/>
     <div className="channel-container">
       <div className="channel-title">Which type of payment channel would you like to create?</div>
       <div className="payment-type">
@@ -24,7 +46,7 @@ const Channel = () => {
       </div>
       <div className="channel-title">What currency would you like to use?</div>
       <div className="form-div">
-        <Ether/>
+        <Ether etherContent = {etherContent}/>
         <ERC20/>
       </div>
     </div>
