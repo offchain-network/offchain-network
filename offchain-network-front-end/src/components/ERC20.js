@@ -21,6 +21,12 @@ const ERC20 = () => {
           <span>Token Address</span>
           <input placeholder="0x123abc"/>
         </div>
+
+        <div className="token-address">
+            <span>Duration (in seconds) contract stays open</span>
+            <input placeholder="86400"/>
+        </div>
+
         <button className="erc-20">Use an ERC20 token</button>
       </form>
     </div>

@@ -7,7 +7,6 @@
 	text-align: center;
 	font-size: 14px;
 	margin-top: 20px;
-	height: 50vh;
 }
 
 h3 {
@@ -41,6 +40,10 @@ h3 {
 
 .input-field:last-child {
 	align-items: flex-end;
+}
+
+.token-address span {
+	font-size: 12px;
 }
 
 button {

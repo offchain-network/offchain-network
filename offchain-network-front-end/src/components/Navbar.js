@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from "../images/Logo.png";
 import '../css/navbar.css';
+import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const [content, setContent] = useState("")
+
+  const [signer, setSigner] = useState(undefined);
+
+  const init = async () => {
+    await window.ethereum.enable()
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    setSigner(signer);
+  }
+
+  const navInit = async () => {
+    const mycontent = await signer.getAddress()
+    setContent(mycontent)
+  }
+
+  useEffect(() => {
+    init()
+    if(signer === undefined) {
+      setContent("Connect to Wallet")
+    } else {
+      navInit()
+    }
+  }, [])
+
+  const handleInit = () => {
+    init()
+  }
+
   return ( 
     <div className="navbar-container">
       <nav>
@@ -21,7 +51,7 @@ const Navbar = () => {
         <div className="nav-links">
           <span><a href="#">About</a></span>
           <span><a href="#">Whitepaper</a></span>
-          <span><a href="#">Contact</a></span>
+          {content == "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleInit}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
         </div>
       </nav> 
     </div>

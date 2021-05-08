@@ -17,6 +17,10 @@ const Ether = () => {
             <span>ETH</span>
           </div>
         </div>
+        <div className="token-address">
+            <span>Duration (in seconds) contract stays open</span>
+            <input placeholder="86400"/>
+          </div>
         <button>Use Ether</button>
       </form>
     </div>

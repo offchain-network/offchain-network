@@ -44,13 +44,21 @@ nav a {
 }
 
 .nav-links {
-	width: 20rem;
+	width: 33rem;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 }
 
-@media screen and (max-width: 768px) {
+.nav-link-red {
+	color: red;
+	border: none;
+	background: none;
+	width: auto;
+}
+
+/* @media screen and (max-width: 768px) {
 	.navbar-container {
 		display: none;
 	}
-}
+} */
