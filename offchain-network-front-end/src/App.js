@@ -19,7 +19,7 @@ const init = async () => {
 }
 
 useEffect(()=>{
-  init();
+  // init();
 }, [])
 
   return (
