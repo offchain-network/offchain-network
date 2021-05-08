@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Logo from "../images/Logo.png";
 import '../css/navbar.css';
-import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({signer, init}) => {
   const [content, setContent] = useState("")
-
-  const [signer, setSigner] = useState(undefined);
-
-  const init = async () => {
-    await window.ethereum.enable()
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    setSigner(signer);
-  }
 
   const navInit = async () => {
     const mycontent = await signer.getAddress()
@@ -22,7 +12,6 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    init()
     if(signer === undefined) {
       setContent("Connect to Wallet")
     } else {
