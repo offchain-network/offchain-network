@@ -19,8 +19,10 @@ const init = async () => {
 }
 
 useEffect(()=>{
-  // init();
-}, [])
+  console.log(signer)
+}, [signer])
+
+console.log(signer)
 
   return (
     <div className="App">

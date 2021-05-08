@@ -12,6 +12,7 @@ const Navbar = ({signer, init}) => {
   }
 
   useEffect(() => {
+    console.log("In navbar ", signer)
     if(signer === undefined) {
       setContent("Connect to Wallet")
     } else {
