@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import {postEndpoint} from "../api/utils";
 import "../css/sender.css";
 import axios from 'axios';
+import { useWeb3React } from '@web3-react/core';
+import { useEagerConnect, injected } from "../hooks/index";
 
-const Sender = ({signer}) => {
+
+const Sender = () => {
+
+  const [content, setContent] = useState("")
+  const { library, account, connector, active, activate } = useWeb3React();
+
+  const triedEager = useEagerConnect();
+
+  useEffect(() => {
+    if (!active && triedEager) {
+      activate(connector, null, false);
+    }
+  }, [])
 
   const transactionObject = {
            id: "id",               
-           SenderAddress: signer,
+           SenderAddress: account,
            ReceiverAddress: "receiver",
            AddressOfTokenUsed: "token",
            AmountOfTokensWithSender: "senderToken",
@@ -36,7 +50,7 @@ const signPayment = async (signer, contractAddress, channelId, amount) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  signPayment(signer, "0x0000000000000", "channelId", amount);
+  signPayment(library.getSigner(), "0x0000000000000", "channelId", amount);
   await axios.post(`${postEndpoint}/${transaction}`);
 }
 

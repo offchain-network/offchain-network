@@ -5,26 +5,45 @@ import Ether from './Ether';
 import RecipientId from './RecipientId';
 import abi from '../contracts/UnidirectionalPaymentChannelHub.json';
 import { ethers } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
+//import { Interface } from '@ethersproject/abi'
 
 const Channel = () => {
+
+  //const abiInterface = new Interface(abi)
+
+  const { active, library, connector, error } = useWeb3React()
+  if (error) {
+    alert(error)
+  }
+
   const [recipient, setRecipient] = useState("")
   const [etherChannel, setEtherChannel] = useState(undefined)
   const getRecipientId = (state) => {
     setRecipient(state)
   }
 
+
   const etherContent = async (content) => {
-    let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
-    let contract = new ethers.Contract(contractAddress, abi, "signer");
-    let recipientAddress = recipient;
-    let duration = content.duration;
-    let tokenAddress = ethers.constants.AddressZero
-    let tokenAmount = 0;
-    let overrides = { value: content.amount };
-    let tx = await contract.open(recipientAddress, duration, tokenAddress, tokenAmount, overrides);
-    console.log(tx.hash);
-    await tx.wait();
-    alert("success!");
+    if (active) {
+      let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
+      let contract = new ethers.Contract(contractAddress, abi.abi, library.getSigner());
+      let recipientAddress = recipient;
+      let duration = content.duration;
+      let tokenAddress = ethers.constants.AddressZero
+      let tokenAmount = 0;
+      let overrides = { value: content.amount };
+      try {
+        let tx = await contract.open(recipientAddress, duration, tokenAddress, tokenAmount, overrides);
+        console.log(tx.hash);
+        await tx.wait();
+        alert("success!");
+      } catch (e) {
+        alert(e.data.message)
+      }
+    }
+    
+
   }
 
   return ( 

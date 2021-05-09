@@ -2,21 +2,31 @@ import React, { useEffect, useState } from 'react';
 import Logo from "../images/Logo.png";
 import '../css/navbar.css';
 import { Link } from 'react-router-dom';
+import { useEagerConnect, injected } from "../hooks/index";
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 
-const Navbar = ({init}) => {
+
+function Navbar() {
+  console.log("start")
   const [content, setContent] = useState("")
+  const { account, connector, active, activate, error } = useWeb3React();
+  const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError
+  if (isUnsupportedChainIdError) {
+    alert("Switch to Matic Testnet \nMore info: https://docs.matic.network/docs/develop/metamask/config-matic")
+  }
 
   useEffect(() => {
-    const address = JSON.parse(localStorage.getItem("signer"))
-    if(!address) {
-      setContent("Connect to Wallet")
+    console.log("hello", active)
+    if (!active) {
+        setContent("Connect to Wallet")
     } else {
-      setContent(address)
+        setContent(account)
     }
-  }, [])
+  }, [active])
 
-  const handleInit = () => {
-    init()
+  const handleActivate = () => {
+    console.log(account)
+    activate(injected, null, false);
   }
 
   return ( 
@@ -36,7 +46,7 @@ const Navbar = ({init}) => {
         <div className="nav-links">
           <span><a href="#">About</a></span>
           <span><a href="#">Whitepaper</a></span>
-          {content === "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleInit}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
+          {content === "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleActivate}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
         </div>
       </nav> 
     </div>

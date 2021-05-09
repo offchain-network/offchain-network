@@ -21,7 +21,7 @@ const Receive = () => {
           <span>Custom</span>
            <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="customSwitch1" onChange={handleChange}/>
-              <label class="custom-control-label" for="customSwitch1"></label>
+              <label class="custom-control-label" htmlFor="customSwitch1"></label>
           </div>
         </div>
       </div>

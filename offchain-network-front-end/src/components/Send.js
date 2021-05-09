@@ -6,12 +6,12 @@ import Receiver from './Receiver';
 import Sender from './Sender';
 import Transaction from './Transaction';
 
-const Send = ({signer}) => {
+const Send = () => {
   return ( 
     <>
     <ChannelId/>
     <div className="transfer-info">
-      <Sender signer={signer}/>
+      <Sender/>
       <img src={arrow} alt="arrow" className="arrow-png"/>
       <Receiver/>
     </div>
