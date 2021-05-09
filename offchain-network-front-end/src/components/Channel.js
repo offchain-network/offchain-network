@@ -12,7 +12,7 @@ const Channel = () => {
 
   //const abiInterface = new Interface(abi)
 
-  const { active, library, connector, error } = useWeb3React()
+  const { account, active, library, connector, error } = useWeb3React()
   if (error) {
     alert(error)
   }
@@ -26,21 +26,31 @@ const Channel = () => {
 
   const etherContent = async (content) => {
     if (active) {
+    try {
       let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
       let contract = new ethers.Contract(contractAddress, abi.abi, library.getSigner());
+      if (!ethers.utils.isAddress(recipient)) {
+        throw "Please enter a correct recipient address"
+      }
       let recipientAddress = recipient;
-      let duration = content.duration;
+      let duration = parseInt(content.duration);
       let tokenAddress = ethers.constants.AddressZero
       let tokenAmount = 0;
-      let overrides = { value: content.amount };
-      try {
-        let tx = await contract.open(recipientAddress, duration, tokenAddress, tokenAmount, overrides);
+      let overrides = { value: ethers.utils.parseEther(content.amount) };
+      let tx = await contract.open(recipientAddress, duration, tokenAddress, tokenAmount, overrides);
         console.log(tx.hash);
         await tx.wait();
-        alert("success!");
+        let channelId = await contract.getUsersToId(account, recipientAddress, tokenAddress);
+        alert("Success - save your channel's ID: " + channelId)
       } catch (e) {
-        alert(e.data.message)
+        if (e.data !== undefined) {
+          alert(e.data.message)
+        } else {
+          alert(e)
+        }
       }
+    } else {
+      alert("Connect to a wallet first")
     }
     
 
