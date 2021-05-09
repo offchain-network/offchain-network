@@ -5,6 +5,7 @@ import "../css/sender.css";
 import axios from 'axios';
 import { useWeb3React } from '@web3-react/core';
 import { useEagerConnect, injected } from "../hooks/index";
+import { signPayment } from "../utils/signer.js"
 
 
 const Sender = () => {
@@ -13,6 +14,17 @@ const Sender = () => {
   const { library, account, connector, active, activate } = useWeb3React();
 
   const triedEager = useEagerConnect();
+
+  const [balance, setBalance] = useState(0)
+
+  useEffect(async () => {
+    if (active) {
+        let tempBalance = await library.getBalance(account)
+        tempBalance = ethers.utils.formatEther(tempBalance)
+        tempBalance = (+tempBalance).toFixed(4);
+        setBalance(tempBalance)
+    }
+  })
 
   useEffect(() => {
     if (!active && triedEager) {
@@ -34,19 +46,6 @@ const Sender = () => {
 
   const [amount, setAmount] = useState("0.0");
   const [transaction, setTransaction] = useState(transactionObject);
-
-  const constructPaymentMessage = async (contractAddress, channelId, amount) => {
-    return ethers.utils.solidityKeccak256(
-        ["address", "bytes32", "uint256"],
-        [contractAddress, channelId, amount]
-    );
-}
-
-const signPayment = async (signer, contractAddress, channelId, amount) => {
-    let message = await constructPaymentMessage(contractAddress, channelId, amount);
-    let signedMessage = await signer.signMessage(ethers.utils.arrayify(message));
-    return signedMessage;
-}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -70,9 +69,9 @@ const handleChange = (e) => {
               <input value={amount} onChange={handleChange} name="amount"placeholder="0.0"/>
             </div>
             <div className="form-part">
-              <span>Balance: 1.1183</span>
+              <span>Balance: {balance}</span>
               <select>
-                <option>ETH</option>
+                <option>MATIC</option>
               </select>
             </div>
           </div>
