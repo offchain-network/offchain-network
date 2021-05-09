@@ -86,14 +86,6 @@ const Receive = () => {
     try {
       let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
       let contract = new ethers.Contract(contractAddress, abi.abi, library.getSigner());
-      /*
-      if (!ethers.utils.isArrayish(channel)) {
-        throw "Please enter a correct channel ID"
-      }
-      
-
-      let arrayChannelId = ethers.utils.arrayify(channel);
-      */
 
       if (!ethers.utils.isHexString(channel, 32)) {
         throw "Channel is not bytes32"

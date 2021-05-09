@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../css/send.css";
 import arrow from "../images/Forward Arrow.png";
 import ChannelId from './ChannelId';
 import Receiver from './Receiver';
 import Sender from './Sender';
 import Transaction from './Transaction';
+import { ethers } from 'ethers';
+
 
 const Send = () => {
+
+  const [channelId, setChannelId] = useState("")
+
+  const getChannelId = (state) => {
+    setChannelId(state)
+  }
+
   return ( 
     <>
-    <ChannelId/>
+    <ChannelId getChannelId = {getChannelId}/>
     <div className="transfer-info">
-      <Sender/>
+      <Sender channelId={channelId}/>
       <img src={arrow} alt="arrow" className="arrow-png"/>
       <Receiver/>
     </div>

@@ -8,7 +8,7 @@ import { useEagerConnect, injected } from "../hooks/index";
 import { signPayment } from "../utils/signer.js"
 
 
-const Sender = () => {
+const Sender = (channelId) => {
 
   const [content, setContent] = useState("")
   const { library, account, connector, active, activate } = useWeb3React();
@@ -47,16 +47,19 @@ const Sender = () => {
   const [amount, setAmount] = useState("0.0");
   const [transaction, setTransaction] = useState(transactionObject);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  signPayment(library.getSigner(), "0x0000000000000", "channelId", amount);
-  await axios.post(`${postEndpoint}/${transaction}`);
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!ethers.utils.isHexString(channelId.channelId, 32)) {
+        throw "Channel is not bytes32"
+    }
+    await signPayment(library.getSigner(), "0xd600fC088b51d98d86235A14E22ca14AD3aD7728", channelId.channelId, ethers.utils.parseEther(amount));
+    await axios.post(`${postEndpoint}/${transaction}`);
+  }
 
-const handleChange = (e) => {
-  const amount = e.target.value;
-  setAmount(amount);
-}
+  const handleChange = (e) => {
+    const amount = e.target.value;
+    setAmount(amount);
+  }
 
   return ( 
     <div className="sender-container">
@@ -66,7 +69,7 @@ const handleChange = (e) => {
           <div className="form-border">
             <div className="form-part">
               <span>Amount</span>
-              <input value={amount} onChange={handleChange} name="amount"placeholder="0.0"/>
+              <input value={amount} onChange={handleChange} name="amount" placeholder="0.0"/>
             </div>
             <div className="form-part">
               <span>Balance: {balance}</span>
@@ -75,7 +78,7 @@ const handleChange = (e) => {
               </select>
             </div>
           </div>
-          <button>Send Payment</button>
+          <button>Sign Payment</button>
         </form>
       </div>
     </div>
