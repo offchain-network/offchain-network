@@ -62,10 +62,28 @@ const ChannelId = ({getChannelId}) => {
         <span>Channel ID</span>
         <input placeholder="0x123abc..." name="channelId" onChange={handleChange} onKeyUp={handleKeyUp} value={channelId}/>
       </div>
-      <div>
-      	<div><span>Sender Address</span></div>
-      	<div>Recipient Address</div>
-      </div>
+			<div className = {`channel-id-details ${channelData === undefined ? "display-none": ""}` }>
+				<div className="channleData-content">
+					<span>Sender address</span>
+					<span>{channelData !== undefined ? channelData["sender"] : ""}</span>
+				</div>
+				<div className="channleData-content">
+					<span>Recipient address</span>
+					<span>{channelData !== undefined ? channelData["recipient"] : ""}</span>
+				</div>
+				<div className="channleData-content">
+					<span>Expiration Date</span>
+					<span>{channelData !== undefined ? channelData["expiration"] : ""}</span>
+				</div>
+				<div className="channleData-content">
+					<span>Amount</span>
+					<span>{channelData !== undefined ? channelData["amount"] : ""}</span>
+				</div>
+				<div className="channleData-content">
+					<span>Open</span>
+					<span>{channelData !== undefined ? channelData["open"] ? "true" : "false" : ""}</span>
+				</div>
+			</div>
     </div>
    );
 }

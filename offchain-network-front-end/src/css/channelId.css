@@ -32,3 +32,12 @@
 	padding: 6px;
 	color: #fff;
 }
+
+.display-none {
+	display: none;
+}
+
+.channleData-content {
+	display: flex;
+	justify-content: space-between;
+}
