@@ -21,10 +21,7 @@ const Send = () => {
     <ChannelId getChannelId = {getChannelId}/>
     <div className="transfer-info">
       <Sender channelId={channelId}/>
-      <img src={arrow} alt="arrow" className="arrow-png"/>
-      <Receiver/>
     </div>
-    <Transaction/>
     </>
    );
 }

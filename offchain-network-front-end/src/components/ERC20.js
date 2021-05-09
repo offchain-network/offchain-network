@@ -27,7 +27,7 @@ const ERC20 = () => {
             <input placeholder="86400"/>
         </div>
 
-        <button className="erc-20">Use an ERC20 token</button>
+        <button disabled={true} className="erc-20">TBA</button>
       </form>
     </div>
    );

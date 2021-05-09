@@ -169,7 +169,6 @@ const Receive = () => {
         <button onClick = {handleClick}>Redeem</button>
       </form>
     </div>
-    <Transaction/>
     </>
    );
 }

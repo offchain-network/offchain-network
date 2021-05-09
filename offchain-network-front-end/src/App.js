@@ -8,6 +8,8 @@ import Channel from "./components/Channel";
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { Web3ReactProvider } from '@web3-react/core'
 import getLibrary from './utils/library'
+import background from "./images/background.png";
+
 
 export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
 
@@ -52,7 +54,14 @@ useEffect(()=>{
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <div className="App">
+      <div className="App" style={{ 
+          backgroundImage: `url(${background})` ,
+          backgroundSize: 'cover', 
+          backgroundRepeat: 'no-repeat',
+          width: '100vw',
+          height: '100vh',
+          position: 'absolute',
+        }}>
         <Navbar></Navbar>
         <Switch>
           <Route path="/send" render = {() => <Send/>}/>
