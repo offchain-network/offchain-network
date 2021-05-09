@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useWeb3React } from '@web3-react/core';
 import { useEagerConnect, injected } from "../hooks/index";
 import { signPayment } from "../utils/signer.js"
+import abi from '../contracts/UnidirectionalPaymentChannelHub.json';
 
 
 const Sender = (channelId) => {
@@ -49,11 +50,37 @@ const Sender = (channelId) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (active) {
+    try {
     if (!ethers.utils.isHexString(channelId.channelId, 32)) {
         throw "Channel is not bytes32"
     }
-    await signPayment(library.getSigner(), "0xd600fC088b51d98d86235A14E22ca14AD3aD7728", channelId.channelId, ethers.utils.parseEther(amount));
+
+    let contractAddress = "0xd600fC088b51d98d86235A14E22ca14AD3aD7728";
+    let contract = new ethers.Contract(contractAddress, abi.abi, library.getSigner());
+
+    let channelInfo = await contract.getIdToChannel(channelId.channelId);
+
+    if (channelInfo.sender != account) {
+      throw "You are not the sender of this paymentChannel, only the sender can sign"
+    }
+
+    if (channelInfo.open == false) {
+      throw "This channel has been closed by the recipient, make a new one!"
+    }
+
+    await signPayment(library.getSigner(), contractAddress, channelId.channelId, ethers.utils.parseEther(amount));
     await axios.post(`${postEndpoint}/${transaction}`);
+    } catch (e) {
+        if (e.data !== undefined) {
+          alert(e.data.message)
+        } else {
+          alert(e)
+        }
+      }
+    } else {
+      alert("Connect to a wallet first")
+    }
   }
 
   const handleChange = (e) => {
