@@ -54,14 +54,7 @@ useEffect(()=>{
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <div className="App" style={{ 
-          backgroundImage: `url(${background})` ,
-          backgroundSize: 'cover', 
-          backgroundRepeat: 'no-repeat',
-          width: '100vw',
-          height: '100vh',
-          position: 'absolute',
-        }}>
+      <div className="App">
         <Navbar></Navbar>
         <Switch>
           <Route path="/send" render = {() => <Send/>}/>
