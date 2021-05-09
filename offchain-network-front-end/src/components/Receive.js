@@ -158,7 +158,7 @@ const Receive = () => {
         <div className={`receive-form-on ${display ? "" : "display"}`}>
           <div className="amount-to-withdraw">
             <span>Amount to withdraw</span>
-            <span><input className="input" placeholder="31.862332423846223847" name="amount" onChange={handleInput} value={ChannelId.amount}/>MATIC</span>
+            <div className="matic-div"><input className="input" placeholder="31.862332423846223847" name="amount" onChange={handleInput} value={ChannelId.amount}/><span>MATIC</span></div>
           </div>
           <div className="amount-to-withdraw">
             <span>Withdrawal Signature</span>

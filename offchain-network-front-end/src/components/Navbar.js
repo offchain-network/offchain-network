@@ -44,7 +44,7 @@ function Navbar() {
           </div>
         </div>
         <div className="nav-links">
-          <span><a href="https://github.com/offchain-network/offchain-network">Github</a></span>
+          <span><a href="https://github.com/offchain-network/offchain-network" target="_blank">Github</a></span>
           <span><a href="https://www.notion.so/kristofgazso/offchain-network-5c4f43b7dd1f45d08324c9bc2f9fb93a">Whitepaper</a></span>
           {content === "Connect to Wallet" ? <button className="nav-link-red" onClick = {handleActivate}>Connect to Wallet</button> : <span>{content.slice(0,6)}...{content.slice(-4, content.length)}</span>}
         </div>

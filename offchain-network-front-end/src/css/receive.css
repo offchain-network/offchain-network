@@ -65,10 +65,26 @@ button {
 	background: none;
 	border: none;
 	color: #fff;
+	width: 100%;
+}
+
+.matic-div {
+	display: flex;
+	justify-content: space-between;
+	font-size: 13px;
+}
+
+.matic-div > input {
+	background: none;
+	border: none;
+	color: #fff;
+	flex-grow: 1.5;
 }
 
 .input::placeholder {
-	font-size: 10px;
+	font-size: 13px;
+	text-align: right;
+	margin-right: 5px;
 }
 
 ::placeholder {
