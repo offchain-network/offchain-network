@@ -1,0 +1,18 @@
+.none {
+	display: none;
+}
+
+.details-div {
+	background-color: black;
+	width: 30%;
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.send-details-amount {
+	margin-bottom: 5px;
+}
+
+.send-details-amount > span {
+	display: block;
+}

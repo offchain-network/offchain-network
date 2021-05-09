@@ -7,6 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useEagerConnect, injected } from "../hooks/index";
 import { signPayment } from "../utils/signer.js"
 import abi from '../contracts/UnidirectionalPaymentChannelHub.json';
+import SendDetails from './SendDetails';
 
 
 const Sender = (channelId) => {
@@ -46,6 +47,7 @@ const Sender = (channelId) => {
      }
 
   const [amount, setAmount] = useState("0.0");
+  const [signature, setSignature] = useState(undefined)
   const [transaction, setTransaction] = useState(transactionObject);
 
   const handleSubmit = async (e) => {
@@ -69,7 +71,8 @@ const Sender = (channelId) => {
       throw "This channel has been closed by the recipient, make a new one!"
     }
 
-    await signPayment(library.getSigner(), contractAddress, channelId.channelId, ethers.utils.parseEther(amount));
+    const signature = await signPayment(library.getSigner(), contractAddress, channelId.channelId, ethers.utils.parseEther(amount));
+    setSignature(signature);
     await axios.post(`${postEndpoint}/${transaction}`);
     } catch (e) {
         if (e.data !== undefined) {
@@ -88,7 +91,8 @@ const Sender = (channelId) => {
     setAmount(amount);
   }
 
-  return ( 
+  return (
+  <div className="sender"> 
     <div className="sender-container">
       <span>You</span>
       <div className="send-description">
@@ -109,6 +113,8 @@ const Sender = (channelId) => {
         </form>
       </div>
     </div>
+    <SendDetails amount = {amount} signature = {signature}/>
+  </div>
    );
 }
  
