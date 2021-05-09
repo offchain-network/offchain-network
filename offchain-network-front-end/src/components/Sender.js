@@ -73,7 +73,6 @@ const Sender = (channelId) => {
 
     const signature = await signPayment(library.getSigner(), contractAddress, channelId.channelId, ethers.utils.parseEther(amount));
     setSignature(signature);
-    await axios.post(`${postEndpoint}/${transaction}`);
     } catch (e) {
         if (e.data !== undefined) {
           alert(e.data.message)

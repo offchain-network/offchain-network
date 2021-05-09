@@ -10,7 +10,7 @@ const SendDetails = ({amount, signature}) => {
     </div>
     <div className="send-details-amount">
       <span>Signature</span>
-      <span>{signature}</span>
+      <span className="signature">{signature}</span>
     </div>
     </div>
    );

@@ -16,3 +16,7 @@
 .send-details-amount > span {
 	display: block;
 }
+
+.signature {
+	width: inherit;
+}
