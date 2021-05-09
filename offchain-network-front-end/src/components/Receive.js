@@ -147,12 +147,12 @@ const Receive = () => {
         <div className={`receive-form-off ${display ? "display" : ""}`}>
           <div className="amount-to-withdraw">
             <span>Amount to withdraw</span>
-            <div className="matic-div"><input className="input" placeholder="31.862332423846223847" name="amount" onChange={handleInput} value={ChannelId.amount}/><span>MATIC</span></div>
+            <div className="matic-div"><input className="input" placeholder="0.0" name="amount" onChange={handleInput} value={ChannelId.amount}/><span>MATIC</span></div>
           </div>
           <div className="amount-to-withdraw">
             <span>Withdrawal Signature</span>
             <br></br>
-            <input className="input" placeholder="0x8a3cd88e97634c89b3a5d8408dcb73013e7357ae92f5d6" name="signature" onChange={handleInput} value={ChannelId.amount}/>
+            <input className="input" placeholder="0x00" name="signature" onChange={handleInput} value={ChannelId.amount}/>
           </div>
         </div>
         <button onClick = {handleClick}>Redeem</button>

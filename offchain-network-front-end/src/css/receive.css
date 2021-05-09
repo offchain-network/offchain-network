@@ -64,6 +64,7 @@ button {
 	border: none;
 	color: #fff;
 	width: 100%;
+	text-align: right;
 }
 
 .matic-div {
@@ -77,6 +78,7 @@ button {
 	border: none;
 	color: #fff;
 	flex-grow: 1.5;
+	text-align: right;
 }
 
 .input::placeholder {
