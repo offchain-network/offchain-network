@@ -1,0 +1,33 @@
+//!
+//! The 'offchain-network' contract entry.
+//!
+
+use std::crypto::schnorr::Signature;
+
+struct PaymentChannel {
+	sender: u160,
+	recipient: u160,
+	tokenAddress: u160,
+	expiration: u248,
+	amount: u248,
+	open: bool,
+}
+
+
+contract OffchainNetwork {
+
+	
+
+
+    pub signature: Signature;
+
+    pub fn new(signature: Signature) -> Self {
+        Self {
+            signature: signature,
+        }
+    }
+
+    pub fn verify(self, signature: Signature, message: [bool; 64]) -> bool {
+    	Signature::verify(signature, message)
+    }
+}
