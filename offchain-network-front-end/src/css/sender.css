@@ -1,0 +1,102 @@
+.sender {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.sender-container {
+	background-color: #000;
+	border-radius: 20px;
+	padding: 20px;
+	width: 30%;
+	margin-bottom: 5%;
+}
+
+.sender-container > span {
+	font-weight: bolder;
+	font-size: 16px;
+}
+
+.send-info input {
+	border: none;
+	background-color: black;
+	color: white;
+}
+
+.send-info button {
+	background-color: #1958ed;
+	border-radius: 20px;
+	color: #fff;
+	border: none;
+	font-weight: bolder;
+	font-size: 22px;
+	padding: 15px 35px;
+	width: 100%;
+}
+.form-border {
+	display: flex;
+	justify-content: space-between;
+	border: 1px solid white;
+	border-radius: 20px;
+	padding: 10px;
+	margin: 10px 0;
+}
+
+.form-part:nth-child(1) {
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+}
+
+.form-part:nth-child(2) {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	width: 50%;
+}
+
+.form-part:nth-child(1) > span,
+.form-part:nth-child(2) > span {
+	font-size: 14px;
+}
+
+.form-part input,
+.form-part select {
+	font-size: 22px;
+	margin-top: 10px;
+}
+
+.form-part select {
+	width: 75px;
+	color: #fff;
+	border: none;
+	background-color: #000;
+	align-self: flex-end;
+}
+
+@media screen and (max-width: 768px) {
+	.sender-container {
+		width: 40%;
+	}
+
+	.sender-container > span {
+		font-weight: bolder;
+		font-size: 12px;
+	}
+
+	.form-part:nth-child(1) > span,
+	.form-part:nth-child(2) > span {
+		font-size: 10px;
+	}
+
+	.form-part input,
+	.form-part select {
+		font-size: 14px;
+	}
+
+	.send-info button {
+		font-size: 14px;
+		padding: 12px 35px;
+	}
+}

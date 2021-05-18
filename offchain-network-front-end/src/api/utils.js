@@ -1,0 +1,1 @@
+export const postEndpoint = "https://buth6i1xc6.execute-api.eu-central-1.amazonaws.com/dev/api/transactions";

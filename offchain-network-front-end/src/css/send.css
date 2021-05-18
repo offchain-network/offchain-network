@@ -1,0 +1,17 @@
+.transfer-info {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 86%;
+	margin: 20px auto 0;
+}
+
+@media screen and (max-width: 768px) {
+	.arrow-png {
+		transform: rotate(90deg);
+	}
+
+	.transfer-info {
+		flex-direction: column;
+	}
+}

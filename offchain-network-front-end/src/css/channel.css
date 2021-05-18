@@ -1,0 +1,55 @@
+.channel-container {
+	margin-bottom: 15px;
+}
+
+.channel-title {
+	font-size: 22px;
+	background-color: #000;
+	text-align: center;
+	margin: 20px auto 0;
+	width: 60%;
+	font-weight: bold;
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.payment-type {
+	display: flex;
+	justify-content: space-evenly;
+	margin-top: 30px;
+}
+
+.one-way,
+.two-way {
+	background-color: #000;
+	border-radius: 20px;
+	width: 30%;
+	padding: 30px;
+}
+
+.one-way > h3,
+.two-way > h3 {
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.one-way > p,
+.two-way > p {
+	font-size: 15px;
+}
+
+.one-way button > .two-way > button {
+	font-size: 20px;
+	border-radius: 20px;
+	font-weight: bold;
+}
+
+.two-way > button {
+	background-color: #bcbcbc;
+}
+
+.form-div {
+	display: flex;
+	justify-content: space-evenly;
+}

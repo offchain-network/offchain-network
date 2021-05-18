@@ -1,0 +1,43 @@
+.channel-id-container {
+	background-color: #000;
+	width: 60%;
+	margin: auto;
+	border-radius: 20px;
+	padding: 10px 20px;
+}
+
+.channel-id-search {
+	padding: 2px 10px;
+	border: 1px solid #fff;
+	border-radius: 20px;
+}
+
+.channel-id-search > span {
+	display: block;
+	font-size: 12px;
+	margin-bottom: 5px;
+	font-weight: lighter;
+	color: #bcbcbc;
+}
+
+::placeholder {
+	color: #fff;
+	font-size: 17px;
+}
+
+.channel-id-search > input {
+	width: 100%;
+	background: none;
+	border: none;
+	padding: 6px;
+	color: #fff;
+}
+
+.display-none {
+	display: none;
+}
+
+.channleData-content {
+	display: flex;
+	justify-content: space-between;
+}
