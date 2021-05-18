@@ -1,0 +1,69 @@
+service: offchain-network
+
+plugins:
+  - serverless-dotenv-plugin
+
+custom:
+  dotenv:
+    exclude:
+      - MAIN_TABLE_NAME
+      - SENDER_GSI
+      - RECEIVER_GSI
+      - CHANNEL_GSI
+      - CHANNEL_TABLE_NAME
+
+  mainTableName: main-${self:provider.stage}
+  senderGSI: sender-GSI
+  receiverGSI: receiver-GSI
+  channelGSI: channel-GSI
+  channelTableName: channels-${self:provider.stage}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, "dev"}
+  region: eu-central-1
+  profile: offchain-network
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+        - dynamodb:CreateTable
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+      Resource: "*"
+
+  environment:
+    MAIN_TABLE_NAME: ${self:custom.mainTableName}
+    SENDER_GSI: ${self:senderGSI}
+    RECEIVER_GSI: ${self:receiverGSI}
+    CHANNEL_GSI: ${self:channelGSI}
+    CHANNEL_TABLE_NAME: ${self:custom.channelTableName}
+
+functions:
+  app:
+    handler: build/serverless.handler
+    events:
+      - http:
+          path: /
+          method: any
+          cors: true
+      - http:
+          path: "{proxy+}"
+          method: any
+          cors: true
+
+resources:
+  - ${file(resources/dynamodb-tables.yml)}

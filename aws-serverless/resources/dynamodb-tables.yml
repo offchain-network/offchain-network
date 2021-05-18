@@ -1,0 +1,50 @@
+Resources:
+  MainTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:custom.mainTableName}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: SenderAddress
+          AttributeType: S
+        - AttributeName: ReceiverAddress
+          AttributeType: S
+        - AttributeName: ChannelId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: "PAY_PER_REQUEST"
+      GlobalSecondaryIndexes:
+        - IndexName: ${self:custom.senderGSI}
+          KeySchema:
+            - AttributeName: SenderAddress
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ${self:custom.receiverGSI}
+          KeySchema:
+            - AttributeName: ReceiverAddress
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ${self:custom.channelGSI}
+          KeySchema:
+            - AttributeName: ChannelId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+  ChannelTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:custom.channelTableName}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: "PAY_PER_REQUEST"
